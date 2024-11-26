@@ -20,21 +20,11 @@ jobs:
       - name: Run PyGoat Container
         run: docker run --rm -d -p 8000:8000 pygoat/pygoat:latest
 
-      - name: Wait for PyGoat to start
-        run: |
-          echo "Waiting for PyGoat to start..."
-          sleep 15
-
-      - name: Set up ZAP
-        run: |
-          docker pull ghcr.io/zaproxy/zaproxy
-
-      - name: Run ZAP Security Scanner
-        run: |
-          docker run -t -u zap -v $(pwd):/zap/wrk/:rw -config api.disablekey=true owasp/zap2docker-stable zap-baseline.py -t http://localhost:8000 -r zap_report.html
-
-      - name: Upload ZAP report
+      - name: Run Nikto Scan
+        run: docker run --rm -v $(pwd):/tmp nikto/nikto -h http://localhost:8000 -o /tmp/report.html
+  
+      - name: Upload Nikto Report
         uses: actions/upload-artifact@v3
         with:
-          name: zap-report
-          path: zap_report.html
+          name: report
+          path: report.html
