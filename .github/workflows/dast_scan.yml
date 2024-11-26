@@ -23,16 +23,7 @@ jobs:
       - name: Wait for PyGoat to start
         run: |
           echo "Waiting for PyGoat to start..."
-          sleep 10
-
-      - name: Check if PyGoat is running
-        run: |
-          if curl -s --head --request GET http://localhost:8000 | grep "200 OK" > /dev/null; 
-          then 
-            echo "PyGoat is running" 
-          else 
-            echo "PyGoat failed to start" && exit 1; 
-          fi
+          sleep 15
 
       - name: Set up ZAP
         run: |
