@@ -75,17 +75,15 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+        
+      - name: Build PyGoat Docker image
+        run: docker build -f Dockerfile -t pygoatapp . 
 
-      - name: Set up Docker
-        uses: docker-practice/actions-setup-docker@v1
-        with:
-         docker_version: '20.10.7'
+      - name: Run PyGoat Docker container
+        run: docker run --rm -d -p 8000:8000 pygoatapp:latest
 
-      - name: Build Docker Image
-        run: docker pull pygoat/pygoat:latest 
-
-      - name: Run PyGoat container
-        run: docker run --rm -d -p 8000:8000 pygoat/pygoat:latest
+      - name: Wait PyGoat to start
+        run: sleep 10
 
       - name: Run ZAP scanner
         uses: zaproxy/action-baseline@v0.14.0
@@ -96,8 +94,8 @@ jobs:
         uses: actions/upload-artifact@v3
         if: always()
         with:
-           name: report.html
-           path: report.html
+           name: ZAP_Report
+           path: /home/runner/work/devsecops_sample/devsecops_sample/report_html.html
     
 
 
