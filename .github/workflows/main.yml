@@ -90,17 +90,9 @@ jobs:
         with:
           target: 'http://127.0.0.1:8000/'
 
-      - name: q
-        run: pwd && ls -la
-
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         if: always()
         with:
            name: ZAP_Report
            path: /home/runner/work/devsecops_sample/devsecops_sample/report_html.html
-    
-
-
-
-     
