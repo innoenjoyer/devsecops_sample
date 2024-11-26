@@ -27,7 +27,7 @@ jobs:
 
       - name: Set up ZAP
         run: |
-          docker pull owasp/zap2docker-stable
+          docker pull ghcr.io/zaproxy/zaproxy
 
       - name: Run ZAP Security Scanner
         run: |
