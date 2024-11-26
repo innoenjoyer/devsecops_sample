@@ -21,7 +21,7 @@ jobs:
         run: docker run --rm -d -p 8000:8000 pygoat/pygoat:latest
 
       - name: Run Nikto Scan
-        run: docker run --rm -v $(pwd):/tmp nikto/nikto -h http://localhost:8000 -o /tmp/report.html
+        run: docker run --rm -v $(pwd):/tmp frapsoft/nikto -h http://localhost:8000 -o /tmp/report.html
   
       - name: Upload Nikto Report
         uses: actions/upload-artifact@v3
