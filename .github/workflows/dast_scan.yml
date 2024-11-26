@@ -14,14 +14,17 @@ jobs:
       - name: Set up Docker
         uses: docker/setup-buildx-action@v1
 
+      - name: Create shared network
+        run: docker network create network
+
       - name: Pull PyGoat Docker Image
         run: docker pull pygoat/pygoat:latest
 
       - name: Run PyGoat Container
-        run: docker run --rm -d -p 8000:8000 pygoat/pygoat:latest
+        run: docker run --rm -d -p 8000:8000 --name pygoat --network network pygoat/pygoat:latest
 
       - name: Run Nikto Scan
-        run: docker run --rm -v $(pwd):/tmp frapsoft/nikto -h http://localhost:8000 -o /tmp/report.html
+        run: docker run --rm -v $(pwd):/tmp --network network frapsoft/nikto -h http://pygoat:8000 -o /tmp/report.html
   
       - name: Upload Nikto Report
         uses: actions/upload-artifact@v3
